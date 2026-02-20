@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Caasis - Preview environments</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+  <meta property="og:image:alt" content="">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="theme-color" content="#421e73">
+</head>
+
+<body>
+  <header>
+    <h1><a href="/">Caasis</a></h1>
+    <h3><a href="/#pricing">Pricing</a></h3>
+    <h3><a href="/docs.html">Documentation</a></h3>
+  </header>
+  <h2>Documentation</h2>
+  <div class="box">
+    <p>1. Your service must be packaged as a Docker image.<br/>
+    A Dockerfile/Containerfile:<br/>
+    </p>
+    <ul>
+      <li>- <b>Must</b> expose a port with <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">EXPOSE</a> (for now only TCP is supported).</li>
+      <li>- Should have a <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">HEALTHCHECK</a> to ensure users are only redirect once the service is ready.</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <p>2. Store the API secrets. See <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets">here</a> for GitHub Actions.<p/>
+  </div>
+
+  <div class="box">
+    <p>3. Build then upload the image to the Caasis API.<br/>
+    It is recommended to upload a unique image name, by either using the image ID (which are like `a1b2c3d4`) or a unique image tag to avoid potential collusions on concurrent uploads.
+    </p>
+    <br/>
+    <p>Local upload</p>
+    <div class="code">
+  docker build . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- http://api.caasis.cloud/new
+    </div>
+    <br/>
+    <p>GitHub Actions example</p>
+    <div class="code">
+  name: Build
+  on:
+    push:
+      branches: [master, main]
+    pull_request:
+      types: [opened, reopened, synchronize]
+
+  permissions:
+    pull-requests: write
+
+  jobs:
+    build:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v6
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v3
+        - name: Build
+          run: docker buildx build . -o type=tar,dest=image.tar
+        - name: Push image to Caasis
+          run: |-
+            gzip -c image.tar | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new | gh pr comment --create-if-none --edit-last ${{ github.head_ref }} -F -
+          if: ${{ github.head_ref }}
+          env:
+            GH_TOKEN: ${{ github.token }}
+            CAASIS_API_KEY: ${ secrets.CAASIS_API_KEY }
+    </div>
+    <p>See also <a href="https://cli.github.com/manual/gh_pr_comment">GitHub documentation about gh pr comment</a></p>
+  </div>
+
+  <div class="box">
+    <p>4. Go to the returned URL link, your service will be standing-by and start on the first request, up for 15 minutes.<p/>
+  </div>
+</body>
+</html>
