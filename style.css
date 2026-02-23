@@ -21,6 +21,11 @@ html {
   min-width:100%;
   min-height: 100%;
 }
+@media (orientation: portrait) {
+  html {
+    font-size: 0.8em;
+  }
+}
 
 a {
   text-decoration: none;
@@ -137,6 +142,17 @@ li {
   h1 {
     margin: 0;
   }
+}
+
+footer {
+  font-size: 1.5em;
+  padding: 1em;
+  background-color: #222;
+}
+
+footer a {
+  padding: 1em;
+  color: #eee;
 }
 /*
  * Remove text-shadow in selection highlight:

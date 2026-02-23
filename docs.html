@@ -35,6 +35,18 @@
       <li>- <b>Must</b> expose a port with <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">EXPOSE</a> (for now only TCP is supported).</li>
       <li>- Should have a <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">HEALTHCHECK</a> to ensure users are only redirect once the service is ready.</li>
     </ul>
+    Dockerfile/Containerfile example, assuming an <b>index.html</b> file at the root directory:
+    <div class="code">
+  FROM docker.io/busybox
+
+  COPY . /var/www
+  EXPOSE 8080
+  HEALTHCHECK CMD nc -zw 1 ::1 8080
+  # Workaround only for this image to prevent hang-up
+  STOPSIGNAL 9
+
+  CMD /bin/httpd -vvfp 8080 -h /var/www
+    </div>
   </div>
 
   <div class="box">
@@ -86,5 +98,9 @@
   <div class="box">
     <p>4. Go to the returned URL link, your service will be standing-by and start on the first request, up for 15 minutes.<p/>
   </div>
+  <footer>
+    <a href="mailto:contact@caasis.cloud">Contact</a>
+    <a href="https://github.com/Caasis">GitHub</a>
+  </footer>
 </body>
 </html>
