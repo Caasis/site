@@ -72,12 +72,12 @@
     pull_request:
       types: [opened, synchronize]
 
-  permissions:
-    pull-requests: write
-
   jobs:
     build:
       runs-on: ubuntu-latest
+      permissions:
+        pull-requests: write
+        contents: read
       steps:
         - uses: actions/checkout@v6
         - name: Set up Docker Buildx
