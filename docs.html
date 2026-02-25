@@ -45,7 +45,7 @@
   # Workaround only for this image to prevent hang-up
   STOPSIGNAL 9
 
-  CMD /bin/httpd -vvfp 8080 -h /var/www
+  CMD ["/bin/httpd", "-vvfp", "8080", "-h", "/var/www" ]
     </div>
   </div>
 
@@ -54,13 +54,22 @@
   </div>
 
   <div class="box">
-    <p>3. Build then upload the image to the Caasis API.<br/>
+    <p>3. Build then upload the image to the Caasis API.<br/> (https://api.caasis.cloud)
     It is recommended to upload a unique image name, by either using the image ID (which are like `a1b2c3d4`) or a unique image tag to avoid potential collusions on concurrent uploads.
     </p>
     <br/>
     <p>Local upload</p>
+    Enable OCI build (to be done only once):
     <div class="code">
-  docker build . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- http://api.caasis.cloud/new
+  docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=ocibuilder --bootstrap
+    </div>
+    Then docker build and upload:
+    <div class="code">
+  docker build --builder ocibuilder . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
+    </div>
+    If using <a href="https://podman.io/">podman</a> instead of docker:
+    <div class="code">
+  podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
     <br/>
     <p>GitHub Actions example</p>
