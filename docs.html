@@ -83,7 +83,7 @@
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
         - name: Build
-          run: docker buildx build . -o type=tar,dest=image.tar
+          run: docker buildx build . -o type=oci,dest=image.tar
         - name: Push image to Caasis
           run: |-
             gzip -c image.tar | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new | gh pr comment --create-if-none --edit-last ${{ github.head_ref }} -F -
