@@ -35,77 +35,42 @@
       <li>- <b>Must</b> expose a port with <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">EXPOSE</a> (for now only TCP is supported).</li>
       <li>- Should have a <a href="https://docs.docker.com/reference/dockerfile/#healthcheck">HEALTHCHECK</a> to ensure users are only redirect once the service is ready.</li>
     </ul>
-    Dockerfile/Containerfile example, assuming an <b>index.html</b> file at the root directory:
-    <div class="code">
-  FROM docker.io/busybox
-
-  COPY . /var/www
-  EXPOSE 8080
-  HEALTHCHECK CMD nc -zw 1 ::1 8080
-  # Workaround only for this image to prevent hang-up
-  STOPSIGNAL 9
-
-  CMD ["/bin/httpd", "-vvfp", "8080", "-h", "/var/www" ]
-    </div>
   </div>
 
   <div class="box">
-    <p>2. Store the API secrets. See <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a> for GitHub Actions.<p/>
+    <p>2. Add your API key <b>CAASIS_API_KEY</b> to the repository, which is in the form of <b>login:password</b>. To add secrets in GitHub, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
   </div>
 
   <div class="box">
-    <p>3. Build then upload the image to the Caasis API.<br/> (https://api.caasis.cloud)
-    It is recommended to upload a unique image name, by either using the image ID (which are like `a1b2c3d4`) or a unique image tag to avoid potential collusions on concurrent uploads.
+    <p>3. Build then upload the image to the Caasis API.<br/>
+    <ul>
+      <li>
+        - It is recommended to upload a unique image name,
+        by either using the image ID (which are like `a1b2c3d4`)
+        or a unique image tag to avoid potential collusions on concurrent uploads.
+      </li>
+      <li>- Change the <b>api.caasis.cloud</b> endpoint with yours (like oss2.caasis.cloud).</li>
+    </ul>
     </p>
     <br/>
     <p>Local upload</p>
     Enable OCI build (to be done only once):
     <div class="code">
-  docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=ocibuilder --bootstrap
+  docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
     </div>
     Then docker build and upload:
     <div class="code">
-  docker build --builder ocibuilder . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
+  docker build --builder oci . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
     If using <a href="https://podman.io/">podman</a> instead of docker:
     <div class="code">
   podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
     <br/>
-    <p>GitHub Actions example</p>
-    <div class="code">
-  name: Build
-  on:
-    push:
-      branches: [master, main]
-    pull_request:
-      types: [opened, synchronize]
-
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      permissions:
-        pull-requests: write
-        contents: read
-      steps:
-        - uses: actions/checkout@v6
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
-        - name: Build
-          run: docker buildx build . -o type=oci,dest=image.tar
-        - name: Push image to Caasis
-          run: |-
-            gzip -c image.tar | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new | gh pr comment --create-if-none --edit-last ${{ github.head_ref }} -F -
-          if: ${{ github.head_ref }}
-          env:
-            GH_TOKEN: ${{ github.token }}
-            CAASIS_API_KEY: ${{ secrets.CAASIS_API_KEY }}
-    </div>
-    <p>See also <a href="https://cli.github.com/manual/gh_pr_comment">GitHub documentation about gh pr comment</a></p>
+    <p>A GitHub Actions example is present <a href="https://github.com/Caasis/github-actions-example">here</a>.</p>
   </div>
-
   <div class="box">
-    <p>4. Go to the returned URL link, your service will be standing-by and start on the first request, up for 15 minutes.<p/>
+    <p>4. Go to the returned URL link, enter your login and password. Your service will be standing-by and start on the first request, up for 15 minutes.<p/>
   </div>
   <footer>
     <a href="mailto:contact@caasis.cloud">Contact</a>
