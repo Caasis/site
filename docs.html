@@ -38,23 +38,17 @@
   </div>
 
   <div class="box">
-    <p>2. Add your API key <b>CAASIS_API_KEY</b> to the repository, which is in the form of <b>login:password</b>. To add secrets in GitHub, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
+    <p>2. Get your API key <b>CAASIS_API_KEY</b> (<a href='mailto:support@caasis.cloud'>ask by mail</a>), which is in the form of <b>login:password</b>. For CI, add it to your the repositors secrets. </p>
+    <p>To add secrets for a GitHub repository, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
   </div>
 
   <div class="box">
-    <p>3. Build then upload the image to the Caasis API.<br/>
-    <ul>
-      <li>
-        - It is recommended to upload a unique image name,
-        by either using the image ID (which are like `a1b2c3d4`)
-        or a unique image tag to avoid potential collusions on concurrent uploads.
-      </li>
-      <li>- Change the <b>api.caasis.cloud</b> endpoint with yours (like oss2.caasis.cloud).</li>
-    </ul>
-    </p>
-    <br/>
-    <p>Local upload</p>
-    Enable OCI build (to be done only once):
+    <p>3. Build then upload the image to the Caasis API. Change the <b>api.caasis.cloud</b> endpoint with yours (like oss2.caasis.cloud).</p>
+    </br>
+    <p>3. a. For a CI example, see the <a href="https://github.com/Caasis/github-actions-example">GitHub Actions example</a>.</p>
+    </br>
+    <p>3. b. For local upload</p>
+    For <a href="https://www.docker.com/get-started/">Docker</a>, enable OCI build (to be done only once):
     <div class="code">
   docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
     </div>
@@ -67,7 +61,11 @@
   podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
     <br/>
-    <p>A GitHub Actions example is present <a href="https://github.com/Caasis/github-actions-example">here</a>.</p>
+    <p>
+      ⓘ It is recommended to upload a unique image name,
+      by either using the image ID (which are like `a1b2c3d4`)
+      or a unique image tag to avoid potential collusions on concurrent uploads.
+    </p>
   </div>
   <div class="box">
     <p>4. Go to the returned URL link. Your service will be standing-by and start on the first request, up for 15 minutes.<p/>
