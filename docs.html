@@ -38,7 +38,7 @@
   </div>
 
   <div class="box">
-    <p>2. Get your API key <b>CAASIS_API_KEY</b> (<a href='mailto:support@caasis.cloud'>ask by mail</a>), which is in the form of <b>login:password</b>. For CI, add it to your the repositors secrets. </p>
+    <p>2. Get your API key <b>CAASIS_API_KEY</b> (<a href='mailto:support@caasis.cloud'>ask by mail</a>), which is in the form of <b>login:password</b>. For CI, add it to your repository secrets. </p>
     <p>To add secrets for a GitHub repository, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
   </div>
 
@@ -47,8 +47,8 @@
     </br>
     <p>3. a. For a CI example, see the <a href="https://github.com/Caasis/github-actions-example">GitHub Actions example</a>.</p>
     </br>
-    <p>3. b. For local upload</p>
-    For <a href="https://www.docker.com/get-started/">Docker</a>, enable OCI build (to be done only once):
+    <p>3. b. For local upload:</p>
+    - If using <a href="https://www.docker.com/get-started/">Docker</a>, enable OCI build (to be done only once):
     <div class="code">
   docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
     </div>
@@ -56,7 +56,7 @@
     <div class="code">
   docker build --builder oci . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
-    If using <a href="https://podman.io/">podman</a> instead of docker:
+    - If using <a href="https://podman.io/">podman</a> instead of docker:
     <div class="code">
   podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
