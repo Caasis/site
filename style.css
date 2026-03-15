@@ -117,7 +117,7 @@ li {
 .box {
   background-color: #dadada;
   border-radius: 1em;
-  margin: 1em;
+  margin: 0.5rem;
   padding: 1em;
   display: block;
 }
@@ -164,6 +164,14 @@ footer {
 footer a {
   padding: 1em;
   color: #eee;
+}
+
+#screenshot {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem;
+  border-radius: 1rem;
+/*   display: flex; */
 }
 /*
  * Remove text-shadow in selection highlight:
