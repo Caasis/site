@@ -141,6 +141,9 @@ li {
   .container div {
     width: 100%;
   }
+  #screenshot {
+    max-width: 50%;
+  }
   h1 {
     margin: 0 4em 0 0;
   }
@@ -149,7 +152,9 @@ li {
   .container {
     flex-direction: column;
   }
-
+  #screenshot {
+    max-width: 100%;
+  }
   h1 {
     margin: 0;
   }
@@ -167,11 +172,8 @@ footer a {
 }
 
 #screenshot {
-  max-width: 100%;
-  height: auto;
   margin: 0.5rem;
   border-radius: 1rem;
-/*   display: flex; */
 }
 /*
  * Remove text-shadow in selection highlight:
