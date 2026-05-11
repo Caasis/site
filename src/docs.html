@@ -1,31 +1,8 @@
 <!doctype html>
 <html lang="">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Caasis - Preview environments</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="description" content="">
-
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-  <meta property="og:image:alt" content="">
-
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="icon.png">
-  <meta name="theme-color" content="#421e73">
-</head>
-
+${HEAD}
 <body>
-  <header>
-    <h1><a href="/">Caasis</a></h1>
-    <h3><a href="/#pricing">Pricing</a></h3>
-    <h3><a href="/docs.html">Documentation</a></h3>
-  </header>
+  ${HEADER}
   <h2>Documentation</h2>
   <div class="box">
     <p>1. Your service must be packaged as a Docker image.<br/>
@@ -70,9 +47,6 @@
   <div class="box">
     <p>4. Go to the returned URL link. Your service will be standing-by and start on the first request, up for 15 minutes.<p/>
   </div>
-  <footer>
-    <a href="mailto:contact@caasis.cloud">Contact</a>
-    <a href="https://github.com/Caasis">GitHub</a>
-  </footer>
+  ${FOOTER}
 </body>
 </html>
