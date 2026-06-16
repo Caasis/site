@@ -1,9 +1,17 @@
 <header>
   <div class="logo"><a href="/">Caasis</a></div>
-  <input id="hamburger" type="checkbox"/>
-  <label for="hamburger"></label>
-  <div id="menu">
-    <a href="/#pricing">Pricing</a>
-    <a href="/docs.html">Documentation</a>
-  </div>
+  <button type="button" popovertarget="menu" popovertargetaction="open" aria-label="Open Menu">
+    ☰
+  </button>
+  <nav id="menu" popover="auto">
+    <button type="button" popovertarget="menu" popovertargetaction="close" aria-label="Close Menu">
+      ✕
+    </button>
+    <div>
+      <a href="/#pricing">Pricing</a>
+      <a href="/docs.html">Documentation</a>
+      <a href="mailto:contact@caasis.cloud">Contact</a>
+      <a href="https://github.com/Caasis">GitHub</a>
+    </div>
+  </nav>
 </header>
