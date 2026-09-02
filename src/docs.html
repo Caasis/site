@@ -27,17 +27,16 @@ ${HEAD}
     <p>3. b. For local upload:</p>
     - If using <a href="https://www.docker.com/get-started/">Docker</a>, enable OCI build (to be done only once):
     <div class="code">
-  docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
+      docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
     </div>
     Then docker build and upload:
     <div class="code">
-  docker build --builder oci . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
+      docker build --builder oci . -o type=oci,dest=- | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
     - If using <a href="https://podman.io/">podman</a> instead of docker:
     <div class="code">
-  podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
+      podman build --format docker . -o - | gzip | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://api.caasis.cloud/new
     </div>
-    <br/>
     <p>
       ⓘ It is recommended to upload a unique image name,
       by either using the image ID (which are like `a1b2c3d4`)

@@ -1,6 +1,6 @@
 # Caasis
 
-Build the site: `./build.sh`
+Build the site: `./build.sh` or `watch ./build.sh`
 
 Run: `busybox httpd -h ./dist -vvfp 8080`
 

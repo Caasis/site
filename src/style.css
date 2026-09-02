@@ -130,7 +130,7 @@ header button {
 /* End Header */
 
 body {
-  margin: 10rem 0 0 0;
+  margin: 9rem 0 0 0;
 }
 
 h2 {
@@ -200,11 +200,11 @@ li {
 .code {
   font-family: monospace;
   font-size: 1rem;
+  padding: 1em;
+  margin: 0.5em 0 0.5em 0;
   background-color: #222;
   color: #98e2c0;
-  width: 100%;
   border-radius: 0.5rem;
-  white-space: pre-wrap;
 }
 
 @media (orientation: landscape) {
