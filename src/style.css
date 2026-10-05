@@ -145,6 +145,11 @@ h3 {
   color: var(--second-color);
   font-weight: normal;
   font-size: 2rem;
+  margin-left: 8%;
+  margin-right: 8%;
+}
+
+.box h3 {
   margin: 0;
 }
 

@@ -5,6 +5,24 @@ ${HEAD}
   ${HEADER}
   <h2>Documentation</h2>
   <div class="box">
+    <p>To start with Caasis, get your API key <b>CAASIS_API_KEY</b> (<a href='mailto:support@caasis.cloud'>ask by mail</a>), which is in the form of <b>login:password</b>. For CI, add it to your repository secrets. </p>
+    <p>To add secrets for a GitHub repository, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
+  </div>
+
+  <h3>Static website</h3>
+  <div class="box">
+    <p>A static website including static assets like .html, .css or .js files can be uploaded as a zip.</p>
+    <p>To upload a static site with the assets present in a `dist` directory:</p>
+    <div class="code">
+      zip -qr - dist | curl -Lu "$CAASIS_API_KEY" --data-binary @- https://static.caasis.cloud/new
+    </div>
+  </div>
+  <div class="box">
+    <p>Go to the returned URL link. The lifetime of the site depends on the <a href="http://localhost:8080/#pricing">plan</a>, usually few weeks.<p/>
+  </div>
+
+  <h3>Backend web service (docker)</h3>
+  <div class="box">
     <p>1. Your service must be packaged as a Docker image.<br/>
     A <a href="https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/">Dockerfile</a>/Containerfile:<br/>
     </p>
@@ -15,16 +33,11 @@ ${HEAD}
   </div>
 
   <div class="box">
-    <p>2. Get your API key <b>CAASIS_API_KEY</b> (<a href='mailto:support@caasis.cloud'>ask by mail</a>), which is in the form of <b>login:password</b>. For CI, add it to your repository secrets. </p>
-    <p>To add secrets for a GitHub repository, see <a href="https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets#creating-secrets-for-a-repository">here</a>.<p/>
-  </div>
-
-  <div class="box">
-    <p>3. Build then upload the image to the Caasis API.</p>
+    <p>2. Build then upload the image to the Caasis API.</p>
     </br>
-    <p>3. a. For a CI example, see the <a href="https://github.com/Caasis/github-actions-example">GitHub Actions example</a>.</p>
+    <p>2. a. For a CI example, see the <a href="https://github.com/Caasis/github-actions-example">GitHub Actions example</a>.</p>
     </br>
-    <p>3. b. For local upload:</p>
+    <p>2. b. For local upload:</p>
     - If using <a href="https://www.docker.com/get-started/">Docker</a>, enable OCI build (to be done only once):
     <div class="code">
       docker buildx create --driver docker-container --driver-opt image=moby/buildkit:master,network=host --name=oci --bootstrap
@@ -44,7 +57,8 @@ ${HEAD}
     </p>
   </div>
   <div class="box">
-    <p>4. Go to the returned URL link. Your service will be standing-by and start on the first request, up for 15 minutes.<p/>
+    <p>3. Go to the returned URL link. Your service will be standing-by and start on the first request, up for 15 minutes or more depending on the plan.<p/>
+    <p>The lifetime of the service depends on the <a href="http://localhost:8080/#pricing">plan</a>, usually few weeks.<p/>
   </div>
   ${FOOTER}
 </body>
